@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %}KMA Totalizator{% endblock %}</title>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap.min.css') }}">
+
+    <!-- Hamburger CSS -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('bower.static', filename='css-hamburgers/dist/hamburgers.min.css') }}">
+
+    {% block styles %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.min.css') }}">
+    {% endblock %}
+</head>
+<body>
+
+{% include "common/navbar.html" %}
+
+{% block content %}
+{% endblock %}
+
+{% include "common/footer.html" %}
+
+<script src="{{ url_for('bower.static', filename='jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ url_for('bower.static', filename='bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "kmatotalizator",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": "4",
+    "jquery": "3",
+    "css-hamburgers": "^1.1.3"
+  },
+  "private": true
+}
