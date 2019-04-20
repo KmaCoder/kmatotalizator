@@ -3,5 +3,11 @@
 {% block title %}{{ super() }} - Register{% endblock %}
 
 {% block content %}
-    Register page!
+    <form class="form-default" method="post" novalidate>
+        {{ renderInput(form.login, "form-input") }}
+        {{ renderInput(form.password, "form-input") }}
+        {{ form.submit(class_="form-submit") }}
+        {{ form.hidden_tag() }}
+        {{ form.errors }}
+    </form>
 {% endblock %}

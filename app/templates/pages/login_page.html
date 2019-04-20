@@ -2,6 +2,14 @@
 
 {% block title %}{{ super() }} - Login{% endblock %}
 
+{% from "macro/form_input.html" import renderInput %}
+
 {% block content %}
-    Login page!
+    <form class="form-default" method="post" novalidate>
+        {{ renderInput(form.login, "form-input") }}
+        {{ renderInput(form.password, "form-input") }}
+        {{ form.submit(class_="form-submit") }}
+        {{ form.hidden_tag() }}
+        {{ form.errors }}
+    </form>
 {% endblock %}

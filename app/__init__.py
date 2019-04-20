@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_bower import Bower
-# from sassutils.wsgi import SassMiddleware
+from flask_login import LoginManager
 
-from app.controllers.index_controller import index
+from app.db.database import db
+from app.controllers import *
 
 
 def create_app():
@@ -11,21 +12,23 @@ def create_app():
     app.config.from_object('config.DevelopmentConfig')
 
     # init database
-    from app.db.database import db
     db.init_app(app)
     db.app = app
     with app.test_request_context():
         db.create_all()
 
+    # init login manager
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "user.login"
+
     # include bower components
-    Bower(app, )
+    Bower(app)
 
     # register blueprints
-    app.register_blueprint(index)
-
-    # compile sass
-    # app.wsgi_app = SassMiddleware(app.wsgi_app, {
-    #     'app': ('static/sass', 'static/css', '/static/css', False)
-    # })
+    app.register_blueprint(index_blueprint)
+    app.register_blueprint(admin_blueprint)
+    app.register_blueprint(user_blueprint)
+    app.register_blueprint(game_blueprint)
 
     return app

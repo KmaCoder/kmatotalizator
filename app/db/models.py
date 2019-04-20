@@ -1,7 +1,7 @@
 import datetime
-from db.database import db
+from app.db.database import db
 
-__all__ = ['User', 'Outcome', 'Draw', 'Event', 'Parlay', 'ParlayDetails']
+__all__ = ['User', 'Outcome', 'Draw', 'Event', 'Parlay', 'ParlayDetails', 'UserRoles', 'Role']
 
 
 class BaseModel(db.Model):
@@ -33,13 +33,33 @@ class User(BaseModel, db.Model):
 
     login = db.Column('login', db.String(50), primary_key=True)
     passhash = db.Column('passhash', db.String(100), nullable=False)
+    email = db.Column('email', db.String(50), nullable=False)
     balance = db.Column('balance', db.Float, nullable=False)
+    roles = db.relationship('Role', secondary='user_role')
+    authenticated = db.Column(db.Boolean, default=False)
 
-    def __init__(self, login, passhash, balance, *args):
+    def __init__(self, login, passhash, email, balance, *args):
         super().__init__(*args)
         self.login = login
         self.passhash = passhash
+        self.email = email
         self.balance = balance
+
+    def is_active(self):
+        """True, as all users are active."""
+        return True
+
+    def get_id(self):
+        """Return the email address to satisfy Flask-Login's requirements."""
+        return self.login
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
+    def is_anonymous(self):
+        """False, as anonymous users aren't supported."""
+        return False
 
 
 class Outcome(BaseModel, db.Model):
@@ -53,6 +73,7 @@ class Draw(BaseModel, db.Model):
     __tablename__ = 'draw'
 
     id = db.Column('id', db.Integer, primary_key=True)
+    name = db.Column('name', db.String(100), nullable=False)
 
 
 class Event(BaseModel, db.Model):
@@ -72,9 +93,9 @@ class Parlay(BaseModel, db.Model):
     __tablename__ = 'parlay'
 
     id = db.Column('id', db.Integer, primary_key=True)
-    amount =db.Column('amount', db.Float, nullable=False)
+    amount = db.Column('amount', db.Float, nullable=False)
     user_fk = db.Column('user_fk', db.String(50), db.ForeignKey('user.login', ondelete='CASCADE', onupdate='CASCADE'),
-              nullable=False)
+                        nullable=False)
 
 
 class ParlayDetails(BaseModel, db.Model):
@@ -87,3 +108,16 @@ class ParlayDetails(BaseModel, db.Model):
     outcome_fk = db.Column('outcome_fk', db.Integer,
                            db.ForeignKey('possible_outcome.id', ondelete='CASCADE', onupdate='CASCADE'),
                            nullable=False, primary_key=True)
+
+
+class Role(BaseModel, db.Model):
+    __tablename__ = 'role'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+
+class UserRoles(BaseModel, db.Model):
+    __tablename__ = 'user_role'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.String(50), db.ForeignKey('user.login', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
