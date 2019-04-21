@@ -1,0 +1,26 @@
+.flashes-container {
+  position: fixed;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+}
+.flashes-container .alert {
+  margin: 0 0 10px;
+}
+.flashes-container .alert-message {
+  color: #383d41;
+  background-color: #e2e3e5;
+  border-color: #d6d8db;
+}
+.flashes-container .alert-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+.flashes-container .alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+/*# sourceMappingURL=main.css.map */

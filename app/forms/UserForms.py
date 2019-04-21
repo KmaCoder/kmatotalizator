@@ -9,8 +9,8 @@ from app.db.db_repo import database_repo
 
 
 class UserLoginForm(Form):
-    login = StringField('Login', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    login = StringField('Login', validators=[DataRequired()], render_kw={"placeholder": "Enter login"})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Enter password"})
     submit = SubmitField('Login')
 
     def __init__(self, *args, **kwargs):
@@ -35,9 +35,10 @@ class UserLoginForm(Form):
 
 
 class UserRegisterForm(Form):
-    login = StringField('Login', validators=[DataRequired()])
-    email = EmailField('Email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    login = StringField('Login', validators=[DataRequired()], render_kw={"placeholder": "Enter unique login"})
+    email = EmailField('Email', validators=[DataRequired()], render_kw={"placeholder": "Enter your email"})
+    password = PasswordField('Password', validators=[DataRequired()],
+                             render_kw={"placeholder": "Enter your new password"})
     submit = SubmitField('Register')
 
     def validate(self):

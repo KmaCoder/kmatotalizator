@@ -18,7 +18,7 @@
           href="{{ url_for('bower.static', filename='css-hamburgers/dist/hamburgers.min.css') }}">
 
     {% block styles %}
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     {% endblock %}
 </head>
 <body>
@@ -28,6 +28,7 @@
 {% block content %}
 {% endblock %}
 
+{% include "common/flashing_messages.html" %}
 {% include "common/footer.html" %}
 
 <script src="{{ url_for('bower.static', filename='jquery/dist/jquery.min.js') }}"></script>

@@ -1,7 +1,11 @@
-$color: #000;
-
 @import "components/navigation";
+@import "components/flash-messages";
+@import "common/variables";
 
 body {
-	color: $color;
+
+}
+
+.flashes-container {
+
 }

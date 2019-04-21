@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_bower import Bower
-from flask_login import LoginManager
 
+from app.controllers.user_controller import login_manager, user_manager
 from app.db.database import db
+from app.db.models import User
 from app.controllers import *
 
 
@@ -17,10 +18,10 @@ def create_app():
     with app.test_request_context():
         db.create_all()
 
-    # init login manager
-    login_manager = LoginManager()
+    # init login manager and user manager
     login_manager.init_app(app)
-    login_manager.login_view = "user.login"
+    login_manager.login_view = "user.login_user"
+    user_manager.init_app(app=app, db=db, UserClass=User)
 
     # include bower components
     Bower(app)
@@ -41,4 +42,4 @@ def create_admin():
     """Creates the admin user."""
     from app.db.db_repo import database_repo
     if database_repo.get_user('admin') is None:
-        user = database_repo.create_user(login="admin", password="admin", is_admin=True)
+        database_repo.create_user(login="admin", password="admin", is_admin=True)

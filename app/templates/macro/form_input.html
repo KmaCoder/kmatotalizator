@@ -1,12 +1,13 @@
-{% macro renderInput(formInput, classes) %}
-    {% if formInput.errors %}
-        {{ formInput(class=classes + " invalid", placeholder=formInput.label.text) }}
-        <div class="input-errors">
-            {% for error in formInput.errors %}
-                <span class="error">{{ error }}</span>
-            {% endfor %}
-        </div>
-    {% else %}
-        {{ formInput(class=classes, placeholder=formInput.label.text) }}
-    {% endif %}
+{% macro renderInput(field, classes) %}
+    <div class="form-group{% if field.errors %} invalid{% endif %}">
+        {{ field.label }}
+        {{ field(class=classes) }}
+        {% if field.errors %}
+            <div class="input-errors">
+                {% for error in field.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 {% endmacro %}

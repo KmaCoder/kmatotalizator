@@ -5,11 +5,13 @@
 {% from "macro/form_input.html" import renderInput %}
 
 {% block content %}
-    <form class="form-default" method="post" novalidate>
-        {{ renderInput(form.login, "form-input") }}
-        {{ renderInput(form.password, "form-input") }}
-        {{ form.submit(class_="form-submit") }}
-        {{ form.hidden_tag() }}
-        {{ form.errors }}
-    </form>
+    <div class="container">
+        <form class="form-default" method="post" novalidate>
+            {{ renderInput(form.login, "form-control") }}
+            {{ renderInput(form.password, "form-control") }}
+            {{ form.submit(class="btn btn-primary") }}
+            {{ form.hidden_tag() }}
+            {{ form.errors }}
+        </form>
+    </div>
 {% endblock %}
