@@ -1,34 +1,11 @@
-import datetime
+from flask_user import UserMixin
+
 from app.db.database import db
 
 __all__ = ['User', 'Outcome', 'Draw', 'Event', 'Parlay', 'ParlayDetails', 'UserRoles', 'Role']
 
 
-class BaseModel(db.Model):
-    """Base data model for all objects"""
-    __abstract__ = True
-
-    def __init__(self, *args):
-        super().__init__(*args)
-
-    def __repr__(self):
-        """Define a base way to print models"""
-        return '%s(%s)' % (self.__class__.__name__, {
-            column: value
-            for column, value in self._to_dict().items()
-        })
-
-    def json(self):
-        """
-                Define a base way to jsonify models, dealing with datetime objects
-        """
-        return {
-            column: value if not isinstance(value, datetime.date) else value.strftime('%Y-%m-%d')
-            for column, value in self._to_dict().items()
-        }
-
-
-class User(BaseModel, db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     login = db.Column('login', db.String(50), primary_key=True)
@@ -70,14 +47,14 @@ class Outcome(db.Model):
     name = db.Column('name', db.String(50), nullable=False, unique=True)
 
 
-class Draw(BaseModel, db.Model):
+class Draw(db.Model):
     __tablename__ = 'draws'
 
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(100), nullable=False)
 
 
-class Event(BaseModel, db.Model):
+class Event(db.Model):
     __tablename__ = 'events'
 
     id = db.Column('id', db.Integer, primary_key=True)
@@ -90,7 +67,7 @@ class Event(BaseModel, db.Model):
                            nullable=False)
 
 
-class Parlay(BaseModel, db.Model):
+class Parlay(db.Model):
     __tablename__ = 'parlays'
 
     id = db.Column('id', db.Integer, primary_key=True)

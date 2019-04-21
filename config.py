@@ -20,6 +20,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     BOWER_COMPONENTS_ROOT = '../bower_components'
     USER_ENABLE_EMAIL = False
+    USER_UNAUTHENTICATED_ENDPOINT = "user.user_login"
 
 
 class ProductionConfig(Config):

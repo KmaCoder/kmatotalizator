@@ -1,11 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user, LoginManager
-from flask_user import SQLAlchemyAdapter, UserManager
+from flask_user import UserManager
 
 from app.db.database import db
 from app.db.db_repo import database_repo
 from app.forms.UserForms import UserLoginForm, UserRegisterForm
-from app.db.models import User
 
 user_blueprint = Blueprint('user', __name__)
 
@@ -19,7 +18,7 @@ def load_user(user_id):
 
 
 @user_blueprint.route('/login', methods=['GET', 'POST'])
-def login_user():
+def user_login():
     next_url = request.args.get('next')
     if current_user.is_authenticated:
         return redirect(next_url or url_for('game.main_page'))
@@ -34,7 +33,7 @@ def login_user():
 
 
 @user_blueprint.route('/register', methods=['GET', 'POST'])
-def register_user():
+def user_register():
     form = UserRegisterForm(request.form)
     if form.validate_on_submit():
         user = database_repo.create_user(
@@ -43,14 +42,14 @@ def register_user():
             password=form.password.data,
             balance_initial=0
         )
-        login_user(user)
+        user_login(user)
         return redirect(request.args.get('next') or url_for('game.main_page'))
     return render_template('pages/register_page.html', form=form)
 
 
 @user_blueprint.route('/logout')
 @login_required
-def logout_logout():
+def user_logout():
     user = current_user
     user.authenticated = False
     db.session.add(user)

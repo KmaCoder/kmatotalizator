@@ -20,7 +20,6 @@ def create_app():
 
     # init login manager and user manager
     login_manager.init_app(app)
-    login_manager.login_view = "user.login_user"
     user_manager.init_app(app=app, db=db, UserClass=User)
 
     # include bower components
