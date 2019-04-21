@@ -1,7 +1,7 @@
 import hashlib
 
 from flask_wtf import Form
-from wtforms import IntegerField, PasswordField, SubmitField, StringField
+from wtforms import PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from wtforms.fields.html5 import EmailField
 

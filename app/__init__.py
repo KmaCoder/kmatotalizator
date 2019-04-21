@@ -31,4 +31,14 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(game_blueprint)
 
+    # add admin user
+    create_admin()
+
     return app
+
+
+def create_admin():
+    """Creates the admin user."""
+    from app.db.db_repo import database_repo
+    if database_repo.get_user('admin') is None:
+        user = database_repo.create_user(login="admin", password="admin", is_admin=True)

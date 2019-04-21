@@ -21,7 +21,7 @@ def login():
     else:
         form = UserLoginForm()
         if form.validate_on_submit():
-            user = database_repo.get_user(form.login)
+            user = database_repo.get_user(form.login.data)
             login_user(user)
             return redirect(next_url or url_for('game.main_page'))
         return render_template('pages/login_page.html', form=form)
@@ -37,10 +37,9 @@ def register():
             password=form.password.data,
             balance_initial=0
         )
-        db.session.add(user)
-        db.session.commit()
+        login_user(user)
         return redirect(request.args.get('next') or url_for('game.main_page'))
-    return render_template('pages/register_page.html')
+    return render_template('pages/register_page.html', form=form)
 
 
 @user_blueprint.route('/logout')

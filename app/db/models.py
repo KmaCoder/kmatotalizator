@@ -35,7 +35,8 @@ class User(BaseModel, db.Model):
     passhash = db.Column('passhash', db.String(100), nullable=False)
     email = db.Column('email', db.String(50), nullable=False)
     balance = db.Column('balance', db.Float, nullable=False)
-    roles = db.relationship('Role', secondary='user_role')
+    roles = db.relationship('Role', secondary='user_role',
+                            backref=db.backref('users', lazy='dynamic'))
     authenticated = db.Column(db.Boolean, default=False)
 
     def __init__(self, login, passhash, email, balance, *args):
@@ -62,11 +63,11 @@ class User(BaseModel, db.Model):
         return False
 
 
-class Outcome(BaseModel, db.Model):
+class Outcome(db.Model):
     __tablename__ = 'possible_outcome'
 
     id = db.Column('id', db.Integer, primary_key=True)
-    name = db.Column('name', db.String(100), nullable=False)
+    name = db.Column('name', db.String(50), nullable=False, unique=True)
 
 
 class Draw(BaseModel, db.Model):
@@ -98,7 +99,7 @@ class Parlay(BaseModel, db.Model):
                         nullable=False)
 
 
-class ParlayDetails(BaseModel, db.Model):
+class ParlayDetails(db.Model):
     __tablename__ = 'parlay_details'
 
     parlay_fk = db.Column('parlay_fk', db.Integer, db.ForeignKey('parlay.id', ondelete='CASCADE', onupdate='CASCADE'),
@@ -110,14 +111,15 @@ class ParlayDetails(BaseModel, db.Model):
                            nullable=False, primary_key=True)
 
 
-class Role(BaseModel, db.Model):
+class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
 
 
-class UserRoles(BaseModel, db.Model):
+class UserRoles(db.Model):
     __tablename__ = 'user_role'
-    id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.String(50), db.ForeignKey('user.login', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
+    user_id = db.Column(db.String(50), db.ForeignKey('user.login', ondelete='CASCADE', onupdate='CASCADE'),
+                        primary_key=True)
+    role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE', onupdate='CASCADE'),
+                        primary_key=True)

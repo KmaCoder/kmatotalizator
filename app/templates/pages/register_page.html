@@ -2,9 +2,12 @@
 
 {% block title %}{{ super() }} - Register{% endblock %}
 
+{% from "macro/form_input.html" import renderInput %}
+
 {% block content %}
     <form class="form-default" method="post" novalidate>
         {{ renderInput(form.login, "form-input") }}
+        {{ renderInput(form.email, "form-input") }}
         {{ renderInput(form.password, "form-input") }}
         {{ form.submit(class_="form-submit") }}
         {{ form.hidden_tag() }}
