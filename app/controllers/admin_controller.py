@@ -9,7 +9,7 @@ admin_blueprint = Blueprint('admin', __name__)
 @admin_blueprint.route('/admin')
 @roles_required('admin')
 def main_page():
-    return render_template('pages/index.html')
+    return render_template('pages/adminka/admin_main.html')
 
 
 @admin_blueprint.route('/admin/create_draw', methods=['POST'])

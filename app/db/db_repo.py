@@ -1,28 +1,36 @@
-import hashlib
-
-from sqlalchemy.sql import ClauseElement
-
-from app.db.database import db
-from app.db.models import *
-
 from flask_sqlalchemy import SQLAlchemy
+from flask_user import UserManager
+
+from app.db.models import *
 
 
 class DatabaseRepo:
-    def __init__(self, db_sqlalchemy: SQLAlchemy):
-        self.db = db_sqlalchemy
 
-    def create_user(self, login: str, password: str, email='', balance_initial: float = 0, is_admin=False):
-        user = User(login=login, passhash=self._hash_password(password), balance=balance_initial, email=email)
-        user.roles.append(self._get_or_create(db.session, Role, name='player'))
+    def __init__(self):
+        self.db: SQLAlchemy = None
+        self.user_manager: UserManager = None
+
+    def init_db(self, db_sqlalchemy: SQLAlchemy, user_manager: UserManager):
+        self.db = db_sqlalchemy
+        self.user_manager = user_manager
+
+    def create_user(self, username: str, password: str, email='', balance_initial: float = 0, is_admin=False):
+        user = User(username=username,
+                    email=email,
+                    password=self.user_manager.password_manager.hash_password(password),
+                    balance=balance_initial)
+        user.roles.append(self._get_or_create(Role, name='player'))
         if is_admin:
-            user.roles.append(self._get_or_create(db.session, Role, name='admin'))
+            user.roles.append(self._get_or_create(Role, name='admin'))
         self.db.session.add(user)
         self.db.session.commit()
         return user
 
-    def get_user(self, user_id):
+    def get_user_by_id(self, user_id):
         return User.query.get(user_id)
+
+    def get_user_by_username(self, username):
+        return User.query.filter_by(username=username).first()
 
     def get_all_users(self):
         return User.query.all()
@@ -30,20 +38,15 @@ class DatabaseRepo:
     def create_draw(self, draw_name, events: [Event]):
         pass
 
-    @staticmethod
-    def _hash_password(password):
-        return hashlib.sha3_256(password.encode('utf-8')).hexdigest()
-
-    @staticmethod
-    def _get_or_create(session, model, **kwargs):
-        instance = session.query(model).filter_by(**kwargs).first()
+    def _get_or_create(self, model, **kwargs):
+        instance = self.db.session.query(model).filter_by(**kwargs).first()
         if instance:
             return instance
         else:
             instance = model(**kwargs)
-            session.add(instance)
-            session.commit()
+            self.db.session.add(instance)
+            self.db.session.commit()
             return instance
 
 
-database_repo = DatabaseRepo(db)
+database_repo = DatabaseRepo()

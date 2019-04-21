@@ -22,7 +22,7 @@ class UserLoginForm(Form):
         if not rv:
             return False
 
-        user = database_repo.get_user(self.login.data)
+        user = database_repo.get_user_by_id(self.login.data)
         if user is None:
             self.login.errors.append("User with this login is not registered")
             return False

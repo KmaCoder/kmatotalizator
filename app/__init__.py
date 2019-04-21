@@ -1,31 +1,34 @@
 from flask import Flask
 from flask_bower import Bower
+from flask_user import UserManager
+from config import config_object
 
-from app.controllers.user_controller import login_manager, user_manager
-from app.db.database import db
 from app.db.models import User
-from app.controllers import *
-
 
 def create_app():
     # init app obj with config
     app = Flask(__name__)
-    app.config.from_object('config.DevelopmentConfig')
+    app.config.from_object(config_object)
 
     # init database
+    from app.db import db
     db.init_app(app)
     db.app = app
     with app.test_request_context():
         db.create_all()
 
-    # init login manager and user manager
-    login_manager.init_app(app)
-    user_manager.init_app(app=app, db=db, UserClass=User)
-
     # include bower components
     Bower(app)
 
+    # Setup Flask-User
+    user_manager = UserManager(app=app, db=db, UserClass=User)
+
+    # Setup db repo
+    from app.db.db_repo import database_repo
+    database_repo.init_db(db, user_manager)
+
     # register blueprints
+    from app.controllers import index_blueprint, admin_blueprint, user_blueprint, game_blueprint
     app.register_blueprint(index_blueprint)
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(user_blueprint)
@@ -40,5 +43,5 @@ def create_app():
 def create_admin():
     """Creates the admin user."""
     from app.db.db_repo import database_repo
-    if database_repo.get_user('admin') is None:
-        database_repo.create_user(login="admin", password="admin", is_admin=True)
+    if database_repo.get_user_by_username('admin') is None:
+        database_repo.create_user(username="admin", password="admin", is_admin=True)

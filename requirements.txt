@@ -7,4 +7,3 @@ SQLAlchemy
 WTForms
 flask-bower
 Flask-User
-flask-login
