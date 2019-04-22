@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-ETO ADMINOCHKA!!!!!!!!!!!
-<form>
-    <button></button>
-</form>
+{% extends "common/layout.html" %}
 
-</body>
-</html>
+{% block title %}{{ super() }} - Adminka{% endblock %}
+
+{% block content %}
+    <div class="container">
+        ADMINKA!!!!
+    </div>
+{% endblock %}

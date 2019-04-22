@@ -1,3 +1,53 @@
-nav {
+$nav-bg: #343a40;
+$nav-color: white;
 
+nav {
+	color: $nav-color;
+	background-color: $nav-bg;
+
+	.navbar-brand {
+		font-weight: 700;
+		background: linear-gradient(to right, #60c6f2 0%, #87ff59 25%, #87ff59 50%, #60c6f2 75%);
+		background-size: 200% auto;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+
+		animation: shine 4s linear infinite;
+		@keyframes shine {
+			to {
+				background-position: 200% center;
+			}
+		}
+	}
+
+	a {
+		color: $nav-color;
+
+		&:hover {
+			color: darken($nav-color, 20%);
+		}
+	}
+
+	.navbar-right {
+		display: flex;
+		align-items: center;
+	}
+
+	.balance-item {
+		font-size: 1rem;
+		margin-right: 2rem;
+		text-decoration: underline;
+	}
+
+	.profile-button {
+		border: 1px solid $nav-color;
+		color: $nav-color;
+		background: transparent;
+		padding: .2rem 1rem;
+
+		&:hover {
+			background: $nav-color;
+			color: $nav-bg;
+		}
+	}
 }

@@ -3,8 +3,33 @@
 @import "common/variables";
 @import "components/forms";
 
-body {
+* {
+	box-sizing: border-box;
 
+	&:after,
+	&:before {
+		box-sizing: border-box;
+	}
+}
+
+html {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Source Sans Pro', Source Sans Pro, sans-serif;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 1.4;
+
+	color: $color-main;
+	background-color: $bg-main;
+
+	position: relative;
+	min-height: 100%;
+	margin: 0;
 }
 
 section.first-section {

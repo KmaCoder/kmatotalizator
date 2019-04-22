@@ -14,25 +14,28 @@ class DatabaseRepo:
         self.db = db_sqlalchemy
         self.user_manager = user_manager
 
-    def create_user(self, username: str, password: str, balance_initial: float = 0, is_admin=False):
+    def create_user(self, username: str, password: str, balance_initial: float = 0, is_admin=False) -> User:
         user = User(username=username,
                     password=self.user_manager.password_manager.hash_password(password),
                     balance=balance_initial)
-        user.roles.append(self._get_or_create(Role, name='player'))
         if is_admin:
             user.roles.append(self._get_or_create(Role, name='admin'))
         self.db.session.add(user)
         self.db.session.commit()
         return user
 
-    def get_user_by_id(self, user_id):
+    def get_user_by_id(self, user_id) -> User:
         return User.query.get(user_id)
 
-    def get_user_by_username(self, username):
+    def get_user_by_username(self, username) -> User:
         return User.query.filter_by(username=username).first()
 
     def get_all_users(self):
         return User.query.all()
+
+    def update_user_balance(self, user: User, delta: int):
+        user.balance = user.balance + delta
+        self.db.session.commit()
 
     def create_draw(self, draw_name, events: [Event]):
         pass

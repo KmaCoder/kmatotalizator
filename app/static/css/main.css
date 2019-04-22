@@ -1,3 +1,46 @@
+nav {
+  color: white;
+  background-color: #343a40;
+}
+nav .navbar-brand {
+  font-weight: 700;
+  background: linear-gradient(to right, #60c6f2 0%, #87ff59 25%, #87ff59 50%, #60c6f2 75%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+nav a {
+  color: white;
+}
+nav a:hover {
+  color: #cccccc;
+}
+nav .navbar-right {
+  display: flex;
+  align-items: center;
+}
+nav .balance-item {
+  font-size: 1rem;
+  margin-right: 2rem;
+  text-decoration: underline;
+}
+nav .profile-button {
+  border: 1px solid white;
+  color: white;
+  background: transparent;
+  padding: 0.2rem 1rem;
+}
+nav .profile-button:hover {
+  background: white;
+  color: #343a40;
+}
+
 .flashes-container {
   position: fixed;
   bottom: 0;
@@ -33,6 +76,31 @@
 
 .form-wrapper .form-title {
   margin-bottom: 1.25rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+*:after, *:before {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Source Sans Pro", Source Sans Pro, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #000;
+  background-color: #fff;
+  position: relative;
+  min-height: 100%;
+  margin: 0;
 }
 
 section.first-section {
