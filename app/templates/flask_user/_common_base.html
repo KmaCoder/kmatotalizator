@@ -1,0 +1,13 @@
+{% extends "common/layout.html" %}
+
+{% block main %}
+    <section class="first-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

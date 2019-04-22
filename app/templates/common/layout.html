@@ -25,8 +25,11 @@
 
 {% include "common/navbar.html" %}
 
-{% block content %}
-{% endblock %}
+<div id="main-div">
+    {% block main %}
+        {% block content %}{% endblock %}
+    {% endblock %}
+</div>
 
 {% include "common/flashing_messages.html" %}
 {% include "common/footer.html" %}

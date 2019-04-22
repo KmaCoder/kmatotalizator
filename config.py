@@ -26,8 +26,8 @@ class Config(object):
 
     USER_ENABLE_EMAIL = False
     USER_ENABLE_USERNAME = True
-    USER_LOGIN_TEMPLATE = 'pages/flask-user/login_page.html'
-    USER_REGISTER_TEMPLATE = 'pages/flask-user/register_page.html'
+    USER_LOGIN_TEMPLATE = 'flask_user/login.html'
+    USER_REGISTER_TEMPLATE = 'flask_user/register.html'
 
     ADMINS = [
         {
