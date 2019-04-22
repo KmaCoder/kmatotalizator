@@ -8,15 +8,18 @@ __all__ = ['User', 'Outcome', 'Draw', 'Event', 'Parlay', 'ParlayDetails', 'UserR
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
+    # required fields
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(50), nullable=False, unique=True)
-    email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, server_default='')
-    balance = db.Column(db.Float, nullable=False)
+    active = True
+
+    # custom fields
+    username = db.Column(db.String(50), nullable=False, unique=True)
+    balance = db.Column(db.Float, nullable=False, default=0)
+
+    # roles relationship
     roles = db.relationship('Role', secondary='user_roles',
                             backref=db.backref('users', lazy='dynamic'))
-    # active = db.Column(db.Boolean(), nullable=False, server_default='0')
-    active = True
 
 
 class Outcome(db.Model):

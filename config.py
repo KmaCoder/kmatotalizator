@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
@@ -25,6 +24,13 @@ class Config(object):
 
     BOWER_COMPONENTS_ROOT = '../bower_components'
     USER_ENABLE_EMAIL = False
+
+    ADMINS = [
+        {
+            "username": "admin",
+            "password": "admin"
+        },
+    ]
 
 
 class ProductionConfig(Config):

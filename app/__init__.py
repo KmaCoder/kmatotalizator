@@ -5,6 +5,7 @@ from config import config_object
 
 from app.db.models import User
 
+
 def create_app():
     # init app obj with config
     app = Flask(__name__)
@@ -35,13 +36,13 @@ def create_app():
     app.register_blueprint(game_blueprint)
 
     # add admin user
-    create_admin()
+    create_admins(app.config['ADMINS'])
 
     return app
 
 
-def create_admin():
-    """Creates the admin user."""
+def create_admins(admins):
     from app.db.db_repo import database_repo
-    if database_repo.get_user_by_username('admin') is None:
-        database_repo.create_user(username="admin", password="admin", is_admin=True)
+    for admin in admins:
+        if database_repo.get_user_by_username(admin['username']) is None:
+            database_repo.create_user(username=admin['username'], password=admin['password'], is_admin=True)
