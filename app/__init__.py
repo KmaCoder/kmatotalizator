@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_bower import Bower
-from flask_user import UserManager
-from config import config_object
 
+from app.controllers.user_controller import CustomUserManager
+from config import config_object
 from app.db.models import User
 
 
@@ -22,7 +22,7 @@ def create_app():
     Bower(app)
 
     # Setup Flask-User
-    user_manager = UserManager(app=app, db=db, UserClass=User)
+    user_manager = CustomUserManager(app=app, db=db, UserClass=User)
 
     # Setup db repo
     from app.db.db_repo import database_repo

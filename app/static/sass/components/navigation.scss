@@ -1,3 +1,5 @@
+@import "../common/variables";
+
 $nav-bg: #343a40;
 $nav-color: white;
 
@@ -28,11 +30,6 @@ nav {
 		}
 	}
 
-	.navbar-right {
-		display: flex;
-		align-items: center;
-	}
-
 	.balance-item {
 		font-size: 1rem;
 		margin-right: 2rem;
@@ -48,6 +45,37 @@ nav {
 		&:hover {
 			background: $nav-color;
 			color: $nav-bg;
+		}
+	}
+
+	.dropdown-menu {
+		margin-top: 15px;
+		box-shadow: 2px 2px 5px 0px rgba(101, 101, 101, 0.1);
+	}
+
+	@media ($max-sm) {
+		text-align: center;
+
+		.balance-item {
+			margin: 15px 0;
+		}
+	}
+
+	.navbar-toggler-icon {
+		background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+	}
+
+	@media ($min-md) {
+		.dropdown-menu:before {
+			content: '';
+			position: absolute;
+			display: block;
+			left: 0;
+			right: 0;
+			opacity: 0;
+			z-index: 0;
+			height: 15px;
+			top: -15px;
 		}
 	}
 }

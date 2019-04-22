@@ -1,11 +1,17 @@
 from flask import Blueprint, render_template, flash
 from flask_login import current_user
-from flask_user import login_required
+from flask_user import login_required, UserManager
 
-from app.forms.UserForms import UserBalanceReplenish
+from app.forms.UserForms import UserBalanceReplenish, CustomEditUserProfileForm
 from app.db.db_repo import database_repo
 
 user_blueprint = Blueprint('user', __name__)
+
+
+class CustomUserManager(UserManager):
+
+    def customize(self, app):
+        self.EditUserProfileForm = CustomEditUserProfileForm
 
 
 @user_blueprint.route('/user/balance', methods=['GET', 'POST'])

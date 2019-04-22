@@ -6,28 +6,29 @@
 
     <h5><a href="{{ url_for('user.balance') }}">Balance: {{ current_user.balance }}</a></h5>
     <hr>
+    {##}
+    {#    <form action="" method="POST" class="form" role="form">#}
+    {#        {{ form.hidden_tag() }}#}
+    {#        {% for field in form %}#}
+    {#            {% if not field.flags.hidden %}#}
+    {#                {% if field.type=='SubmitField' %}#}
+    {#                    {{ render_submit_field(field, tabindex=loop.index*10) }}#}
+    {#                {% else %}#}
+    {#                    {{ render_field(field, tabindex=loop.index*10) }}#}
+    {#                {% endif %}#}
+    {#            {% endif %}#}
+    {#        {% endfor %}#}
+    {#    </form>#}
 
-    <form action="" method="POST" class="form" role="form">
-        {{ form.hidden_tag() }}
-        {% for field in form %}
-            {% if not field.flags.hidden %}
-                {% if field.type=='SubmitField' %}
-                    {{ render_submit_field(field, tabindex=loop.index*10) }}
-                {% else %}
-                    {{ render_field(field, tabindex=loop.index*10) }}
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </form>
-    <br/>
-
-    {% if not user_manager.USER_ENABLE_AUTH0 %}
+    <p>
+        <b>Username:</b> {{ current_user.username }}
         {% if user_manager.USER_ENABLE_CHANGE_USERNAME %}
-            <p><a href="{{ url_for('user.change_username') }}">{% trans %}Change username{% endtrans %}</a></p>
+            <br>
+            <a href="{{ url_for('user.change_username') }}">{% trans %}Change username{% endtrans %}</a>
         {% endif %}
-        {% if user_manager.USER_ENABLE_CHANGE_PASSWORD %}
-            <p><a href="{{ url_for('user.change_password') }}">{% trans %}Change password{% endtrans %}</a></p>
-        {% endif %}
+    </p>
+    {% if user_manager.USER_ENABLE_CHANGE_PASSWORD %}
+        <p><a href="{{ url_for('user.change_password') }}">{% trans %}Change password{% endtrans %}</a></p>
     {% endif %}
 
 {% endblock %}

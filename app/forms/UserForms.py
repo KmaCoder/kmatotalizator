@@ -1,15 +1,16 @@
 from flask_wtf import Form
-from wtforms import PasswordField, SubmitField, StringField, IntegerField
+from wtforms import SubmitField, StringField, IntegerField
 from wtforms.validators import DataRequired
-from wtforms.fields.html5 import EmailField
-
-from app.db.db_repo import database_repo
+from flask_user.forms import EditUserProfileForm
 
 
 class UserBalanceReplenish(Form):
     amount = IntegerField('Amount', validators=[DataRequired()], render_kw={"placeholder": "Top-up amount"})
     submit = SubmitField('Replenish')
 
+
+class CustomEditUserProfileForm(EditUserProfileForm):
+    pass
 
 # class UserLoginForm(Form):
 #     login = StringField('Login', validators=[DataRequired()], render_kw={"placeholder": "Enter login"})
