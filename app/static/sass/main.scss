@@ -1,9 +1,14 @@
 @import "components/navigation";
 @import "components/flash-messages";
 @import "common/variables";
+@import "components/forms";
 
 body {
 
+}
+
+section.first-section {
+	padding-top: 50px;
 }
 
 .flashes-container {

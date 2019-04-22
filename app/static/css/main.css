@@ -12,15 +12,35 @@
   background-color: #e2e3e5;
   border-color: #d6d8db;
 }
-.flashes-container .alert-error {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
+
+.form .btn-form {
+  min-width: 150px;
 }
-.flashes-container .alert-warning {
-  color: #856404;
-  background-color: #fff3cd;
-  border-color: #ffeeba;
+.form .form-group .control-label {
+  margin-bottom: 0.25rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.form .form-group.is-invalid input.form-control {
+  border: 1px solid #dc3545;
+  box-shadow: inset 0px 0px 5px 0px #dc3545;
+}
+.form .form-group.is-invalid .error-block {
+  color: #dc3545;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.form-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.form-wrapper .form-title {
+  margin-bottom: 1.25rem;
+}
+
+section.first-section {
+  padding-top: 50px;
 }
 
 /*# sourceMappingURL=main.css.map */

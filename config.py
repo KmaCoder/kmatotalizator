@@ -23,7 +23,11 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     BOWER_COMPONENTS_ROOT = '../bower_components'
+
     USER_ENABLE_EMAIL = False
+    USER_ENABLE_USERNAME = True
+    USER_LOGIN_TEMPLATE = 'pages/flask-user/login_page.html'
+    USER_REGISTER_TEMPLATE = 'pages/flask-user/register_page.html'
 
     ADMINS = [
         {

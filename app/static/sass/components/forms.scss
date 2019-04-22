@@ -1,0 +1,41 @@
+@import "../common/variables";
+
+.form {
+	.btn-form {
+		min-width: 150px;
+
+		&:hover {
+
+		}
+	}
+
+	.form-group{
+		.control-label {
+			margin-bottom: .25rem;
+			font-weight: 700;
+			font-size: 0.9rem;
+		}
+
+		&.is-invalid {
+			input.form-control {
+				border: 1px solid $color-error;
+				box-shadow: $shadow-error;
+			}
+
+			.error-block {
+				color: $color-error;
+				margin-top: .25rem;
+				font-size: 0.8rem;
+			}
+		}
+	}
+}
+
+.form-wrapper {
+	max-width: 500px;
+	margin: 0 auto;
+
+	.form-title {
+		margin-bottom: 1.25rem;
+	}
+}
