@@ -1,3 +1,5 @@
+import datetime
+
 from flask_user import UserMixin
 
 from app.db import db
@@ -33,7 +35,10 @@ class Draw(db.Model):
     __tablename__ = 'draws'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    date = db.Column(db.Date, nullable=False)
+
+    events = db.relationship('Event', back_populates="draw")
 
 
 class Event(db.Model):
@@ -44,8 +49,10 @@ class Event(db.Model):
 
     draw_fk = db.Column(db.Integer, db.ForeignKey('draws.id', ondelete='RESTRICT', onupdate='CASCADE'),
                         nullable=False)
-    outcome_fk = db.Column(db.Integer, db.ForeignKey('possible_outcomes.id', ondelete='RESTRICT', onupdate='CASCADE'),
-                           nullable=False)
+    outcome_fk = db.Column(db.Integer, db.ForeignKey('possible_outcomes.id', ondelete='RESTRICT', onupdate='CASCADE'))
+
+    draw = db.relationship('Draw', back_populates="events")
+    outcome = db.relationship('Outcome')
 
 
 class Parlay(db.Model):

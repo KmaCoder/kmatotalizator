@@ -1,0 +1,38 @@
+{% extends "common/layout.html" %}
+
+{% block title %}{{ super() }} - Adminka{% endblock %}
+
+{% block content %}
+    {% from "common/form_macros.html" import render_field, render_submit_field %}
+
+    <section class="first-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>Draw #{{ draw.id }}</h3>
+
+                    <p><b>Name:</b> {{ draw.name }}</p>
+                    <p><b>Bets accepted until:</b> {{ draw.name }}</p>
+
+                    <p>Events:</p>
+                    {% for event in draw.events %}
+                        <div>
+                            <a href="/admin/event/{{ event.id }}">
+                                {{ loop.index }}. <b>{{ event.name }}</b>
+                                <small>(id: {{ event.id }})</small>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <h3>Add new event</h3>
+                    <form class="form" method="post">
+                        {{ form.hidden_tag() }}
+                        {{ render_field(form.name) }}
+                        {{ render_submit_field(form.submit) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

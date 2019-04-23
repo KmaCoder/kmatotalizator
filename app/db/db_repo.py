@@ -11,8 +11,8 @@ class DatabaseRepo:
         self.user_manager: UserManager = None
 
     def init_db(self, db_sqlalchemy: SQLAlchemy, user_manager: UserManager):
-        self.db = db_sqlalchemy
-        self.user_manager = user_manager
+        self.db: SQLAlchemy = db_sqlalchemy
+        self.user_manager: UserManager = user_manager
 
     def create_user(self, username: str, password: str, balance_initial: float = 0, is_admin=False) -> User:
         user = User(username=username,
@@ -37,8 +37,23 @@ class DatabaseRepo:
         user.balance = user.balance + delta
         self.db.session.commit()
 
-    def create_draw(self, draw_name, events: [Event]):
-        pass
+    def get_draw_by_id(self, draw_id) -> Draw:
+        return Draw.query.get(draw_id)
+
+    def get_all_draws(self):
+        return Draw.query.all()
+
+    def create_draw(self, draw_name, draw_date) -> Draw:
+        draw = Draw(name=draw_name, date=draw_date)
+        self.db.session.add(draw)
+        self.db.session.commit()
+        return draw
+
+    def create_event(self, event_name, draw: Draw, outcome: Outcome = None) -> Event:
+        event = Event(name=event_name, draw=draw, outcome=outcome)
+        self.db.session.add(event)
+        self.db.session.commit()
+        return event
 
     def _get_or_create(self, model, **kwargs):
         instance = self.db.session.query(model).filter_by(**kwargs).first()

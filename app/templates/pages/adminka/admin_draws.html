@@ -1,0 +1,35 @@
+{% extends "common/layout.html" %}
+
+{% block title %}{{ super() }} - Adminka{% endblock %}
+
+{% block content %}
+    {% from "common/form_macros.html" import render_field, render_submit_field %}
+
+    <section class="first-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>Draws list:</h3>
+
+                    {% for draw in draws %}
+                        <div>
+                            <a href="/admin/draws/{{ draw.id }}">
+                                {{ loop.index }}. <b>{{ draw.name }}</b>
+                                <small>(id: {{ draw.id }})</small>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-4">
+                    <h3>Create draw</h3>
+                    <form class="form" method="post">
+                        {{ form.hidden_tag() }}
+                        {{ render_field(form.name) }}
+                        {{ render_field(form.date) }}
+                        {{ render_submit_field(form.submit) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

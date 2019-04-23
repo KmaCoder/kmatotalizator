@@ -1,7 +1,7 @@
 {% extends 'flask_user/_authorized_base.html' %}
 
 {% block content %}
-    {% from "flask_user/_macros.html" import render_field, render_checkbox_field, render_submit_field %}
+    {% from "common/form_macros.html" import render_field, render_checkbox_field, render_submit_field %}
 
     <h1>{% trans %}Change username{% endtrans %}</h1>
 
