@@ -9,28 +9,67 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
+                    <p style="margin-bottom: 40px"><small><a href="/admin/draws">Back to draw list</a></small></p>
                     <h3>Draw #{{ draw.id }}</h3>
 
                     <p><b>Name:</b> {{ draw.name }}</p>
-                    <p><b>Bets accepted until:</b> {{ draw.name }}</p>
+                    <p><b>Status:</b> {{ draw.draw_status.name }}</p>
+                    <p><b>Parlays accepted until:</b> {{ draw.datetime_first_match }}</p>
 
-                    <p>Events:</p>
-                    {% for event in draw.events %}
-                        <div>
-                            <a href="/admin/event/{{ event.id }}">
-                                {{ loop.index }}. <b>{{ event.name }}</b>
-                                <small>(id: {{ event.id }})</small>
-                            </a>
-                        </div>
-                    {% endfor %}
+                    <h4 style="margin-top: 60px">Events ({{ draw.events|length }}/{{ draw.events_amount }})</h4>
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Date of event
+                            </th>
+                            <th>
+                                Outcome
+                            </th>
+                        </tr>
+                        </thead>
+                        {% for event in draw.events %}
+                            <tr>
+                                <td>{{ event.id }}</td>
+                                <td>
+                                    <a href="/admin/event/{{ event.id }}">
+                                        {{ event.name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ event.datetime }}
+                                </td>
+                                <td>
+                                    {{ event.outcome }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
+
                 <div class="col-md-4">
-                    <h3>Add new event</h3>
-                    <form class="form" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ render_field(form.name) }}
-                        {{ render_submit_field(form.submit) }}
-                    </form>
+                    {% if draw.events|length < draw.events_amount %}
+                        <h3>Add new event</h3>
+                        <form class="form" method="post">
+                            {{ form.hidden_tag() }}
+                            {{ render_field(form.name) }}
+                            {{ render_field(form.date) }}
+                            {{ render_submit_field(form.submit) }}
+                        </form>
+                    {% else %}
+                        {% if draw.draw_status.name == "hidden" %}
+                            <form class="form" method="post" action="{{ draw.id }}/publish">
+                                <input type="submit" class="btn btn-primary btn-form" value="Publish the draw!">
+                            </form>
+                        {% endif %}
+                    {% endif %}
+
                 </div>
             </div>
         </div>

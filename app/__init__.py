@@ -11,12 +11,10 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config_object)
 
-    # init database
+    # init db
     from app.db import db
     db.init_app(app)
     db.app = app
-    with app.test_request_context():
-        db.create_all()
 
     # include bower components
     Bower(app)
@@ -28,6 +26,10 @@ def create_app():
     from app.db.db_repo import database_repo
     database_repo.init_db(db, user_manager)
 
+    # create db
+    with app.test_request_context():
+        db.create_all()
+
     # register blueprints
     from app.controllers import index_blueprint, admin_blueprint, user_blueprint, game_blueprint
     app.register_blueprint(index_blueprint)
@@ -35,14 +37,11 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(game_blueprint)
 
-    # add admin user
-    create_admins(app.config['ADMINS'])
-
     return app
-
-
-def create_admins(admins):
-    from app.db.db_repo import database_repo
-    for admin in admins:
-        if database_repo.get_user_by_username(admin['username']) is None:
-            database_repo.create_user(username=admin['username'], password=admin['password'], is_admin=True)
+#
+#
+# def create_admins(admins):
+#     from app.db.db_repo import database_repo
+#     for admin in admins:
+#         if database_repo.get_user_by_username(admin['username']) is None:
+#             database_repo.create_user(username=admin['username'], password=admin['password'], is_admin=True)

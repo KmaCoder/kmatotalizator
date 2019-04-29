@@ -29,13 +29,6 @@ class Config(object):
     USER_LOGIN_TEMPLATE = 'flask_user/login.html'
     USER_REGISTER_TEMPLATE = 'flask_user/register.html'
 
-    ADMINS = [
-        {
-            "username": "admin",
-            "password": "admin"
-        },
-    ]
-
 
 class ProductionConfig(Config):
     PORT = 80

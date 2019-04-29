@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
 
+from app.db.exceptions import DrawEventsOverflowException, DrawStatusException
 from app.db.models import *
 
 
@@ -43,15 +44,30 @@ class DatabaseRepo:
     def get_all_draws(self):
         return Draw.query.all()
 
-    def create_draw(self, draw_name, draw_date) -> Draw:
-        draw = Draw(name=draw_name, date=draw_date)
+    def create_draw(self, draw_name) -> Draw:
+        draw = Draw(name=draw_name)
+        draw.draw_status = self._get_or_create(DrawStatus, name='hidden')
         self.db.session.add(draw)
         self.db.session.commit()
         return draw
 
-    def create_event(self, event_name, draw: Draw, outcome: Outcome = None) -> Event:
-        event = Event(name=event_name, draw=draw, outcome=outcome)
+    def publish_draw(self, draw):
+        if len(draw.events) < draw.events_amount:
+            raise DrawStatusException
+
+        draw.draw_status = self._get_or_create(DrawStatus, name="pending")
+        self.db.session.commit()
+
+    def create_event(self, event_name, event_datetime, draw: Draw, outcome: Outcome = None) -> Event:
+        if len(draw.events) >= draw.events_amount:
+            raise DrawEventsOverflowException
+
+        event = Event(name=event_name, datetime=event_datetime, draw=draw, outcome=outcome)
         self.db.session.add(event)
+
+        if draw.datetime_first_match is None or (draw.datetime_first_match - event_datetime).total_seconds() > 0:
+            draw.datetime_first_match = event_datetime
+
         self.db.session.commit()
         return event
 
