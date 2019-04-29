@@ -26,6 +26,9 @@
                             <th>
                                 Datetime of first match
                             </th>
+                            <th>
+                                Pool
+                            </th>
                         </tr>
                         </thead>
                         {% for draw in draws %}
@@ -41,6 +44,9 @@
                                 </td>
                                 <td>
                                     {{ draw.datetime_first_match }}
+                                </td>
+                            <td>
+                                    {{ draw.pool_amount }}
                                 </td>
                             </tr>
                         {% endfor %}

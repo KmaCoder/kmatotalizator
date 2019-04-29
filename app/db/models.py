@@ -1,5 +1,8 @@
+from functools import reduce
+
 from flask_user import UserMixin
 from sqlalchemy import event
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.db import db
 
@@ -63,6 +66,15 @@ class Draw(db.Model):
     draw_status_fk = db.Column(db.Integer, db.ForeignKey('draw_statuses.id', ondelete='CASCADE', onupdate='CASCADE'),
                                nullable=False, default=0)
 
+    @hybrid_property
+    def pool_amount(self):
+        # return reduce((lambda event_, sum_e: reduce((lambda parlay_, sum_p: parlay_.amount + sum_p), event_) + sum_e), self.events)
+        result = 0
+        for e in self.events:
+            for p in e.parlays:
+                result += p.amount
+        return result
+
 
 class Event(db.Model):
     __tablename__ = 'events'
@@ -72,6 +84,7 @@ class Event(db.Model):
     datetime = db.Column(db.DateTime, nullable=False)
     draw = db.relationship('Draw', back_populates="events")
     outcome = db.relationship('Outcome')
+    parlays = db.relationship('Parlay', secondary='parlay_details', backref=db.backref('parlays', lazy='dynamic'))
 
     draw_fk = db.Column(db.Integer, db.ForeignKey('draws.id', ondelete='RESTRICT', onupdate='CASCADE'),
                         nullable=False)

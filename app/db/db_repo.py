@@ -58,6 +58,10 @@ class DatabaseRepo:
         draw.draw_status = self._get_or_create(DrawStatus, name="pending")
         self.db.session.commit()
 
+    def get_draw_pull_amount(self, draw):
+        result = self.db.engine.execute("")
+        print(result)
+
     def create_event(self, event_name, event_datetime, draw: Draw, outcome: Outcome = None) -> Event:
         if len(draw.events) >= draw.events_amount:
             raise DrawEventsOverflowException
