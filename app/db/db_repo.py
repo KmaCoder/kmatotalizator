@@ -44,6 +44,8 @@ class DatabaseRepo:
     def get_all_draws(self):
         return Draw.query.all()
 
+    # def
+
     def create_draw(self, draw_name) -> Draw:
         draw = Draw(name=draw_name)
         draw.draw_status = self._get_or_create(DrawStatus, name='hidden')
