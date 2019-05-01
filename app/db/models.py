@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import reduce
 
 from flask_user import UserMixin
@@ -6,7 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.db import db
 
-__all__ = ['User', 'Outcome', 'Draw', 'Event', 'Parlay', 'ParlayDetails', 'UserRoles', 'Role', 'DrawStatus']
+__all__ = ['User', 'Outcome', 'Draw', 'Event', 'Parlay', 'ParlayDetails', 'UserRoles', 'Role']
 
 
 class Role(db.Model):
@@ -20,13 +21,6 @@ class Outcome(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(20), nullable=False, unique=True)
-
-
-class DrawStatus(db.Model):
-    __tablename__ = 'draw_statuses'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100), nullable=False, unique=True)
 
 
 class User(db.Model, UserMixin):
@@ -60,11 +54,21 @@ class Draw(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     datetime_first_match = db.Column(db.DateTime, nullable=True)
-    draw_status = db.relationship('DrawStatus')
+    is_finished = db.Column(db.Boolean, nullable=False, default=False)
     events = db.relationship('Event', back_populates="draw")
 
-    draw_status_fk = db.Column(db.Integer, db.ForeignKey('draw_statuses.id', ondelete='CASCADE', onupdate='CASCADE'),
-                               nullable=False, default=0)
+    @hybrid_property
+    def draw_status(self):
+        if self.is_finished:
+            return "finished"
+
+        if len(self.events) < self.events_amount:
+            return "not_published"
+
+        if self.datetime_first_match < datetime.now():
+            return "waiting_results"
+        else:
+            return "pending"
 
     @hybrid_property
     def pool_amount(self):
@@ -123,15 +127,6 @@ def init_outcomes(*args, **kwargs):
     db.session.add(Outcome(name="w1"))
     db.session.add(Outcome(name="X"))
     db.session.add(Outcome(name="w2"))
-    db.session.commit()
-
-
-@event.listens_for(DrawStatus.__table__, 'after_create')
-def init_draws(*args, **kwargs):
-    db.session.add(DrawStatus(name="hidden"))
-    db.session.add(DrawStatus(name="pending"))
-    db.session.add(DrawStatus(name="processing"))
-    db.session.add(DrawStatus(name="finished"))
     db.session.commit()
 
 

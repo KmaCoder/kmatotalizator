@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
 
@@ -44,25 +46,15 @@ class DatabaseRepo:
     def get_all_draws(self):
         return Draw.query.all()
 
-    # def
+    def get_pending_draws(self):
+        datetime_now = datetime.now()
+        return Draw.query.filter(Draw.datetime_first_match > datetime_now)
 
     def create_draw(self, draw_name) -> Draw:
         draw = Draw(name=draw_name)
-        draw.draw_status = self._get_or_create(DrawStatus, name='hidden')
         self.db.session.add(draw)
         self.db.session.commit()
         return draw
-
-    def publish_draw(self, draw):
-        if len(draw.events) < draw.events_amount:
-            raise DrawStatusException
-
-        draw.draw_status = self._get_or_create(DrawStatus, name="pending")
-        self.db.session.commit()
-
-    def get_draw_pull_amount(self, draw):
-        result = self.db.engine.execute("")
-        print(result)
 
     def create_event(self, event_name, event_datetime, draw: Draw, outcome: Outcome = None) -> Event:
         if len(draw.events) >= draw.events_amount:

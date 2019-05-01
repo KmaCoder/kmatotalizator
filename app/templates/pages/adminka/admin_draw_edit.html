@@ -9,11 +9,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
-                    <p style="margin-bottom: 40px"><small><a href="/admin/draws">Back to draw list</a></small></p>
+                    <p style="margin-bottom: 40px">
+                        <small><a href="/admin/draws">Back to draw list</a></small>
+                    </p>
                     <h3>Draw #{{ draw.id }}</h3>
 
                     <p><b>Name:</b> {{ draw.name }}</p>
-                    <p><b>Status:</b> {{ draw.draw_status.name }}</p>
+                    <p><b>Status:</b> {{ draw.draw_status }}</p>
                     <p><b>Parlays accepted until:</b> {{ draw.datetime_first_match }}</p>
 
                     <h4 style="margin-top: 60px">Events ({{ draw.events|length }}/{{ draw.events_amount }})</h4>
@@ -63,11 +65,10 @@
                             {{ render_submit_field(form.submit) }}
                         </form>
                     {% else %}
-                        {% if draw.draw_status.name == "hidden" %}
-                            <form class="form" method="post" action="{{ draw.id }}/publish">
-                                <input type="submit" class="btn btn-primary btn-form" value="Publish the draw!">
-                            </form>
-                        {% endif %}
+                        <h3>Published!</h3>
+                        {#                            <form class="form" method="post" action="{{ draw.id }}/publish">#}
+                        {#                                <input type="submit" class="btn btn-primary btn-form" value="Publish the draw!">#}
+                        {#                            </form>#}
                     {% endif %}
 
                 </div>

@@ -38,13 +38,13 @@ def draw_edit(draw_id):
             flash(f"You are trying to add to many events: maximum {draw.events_amount}", "error")
     return render_template('pages/adminka/admin_draw_edit.html', form=form, draw=draw)
 
-
-@admin_blueprint.route('/admin/draws/<draw_id>/publish', methods=['POST'])
-@roles_required('admin')
-def draw_publish(draw_id):
-    try:
-        database_repo.publish_draw(database_repo.get_draw_by_id(draw_id))
-        flash("Draw successfully published!",  "success")
-    except DrawStatusException:
-        flash("Add more events to publish the draw", "error")
-    return redirect(f"/admin/draws/{draw_id}")
+#
+# @admin_blueprint.route('/admin/draws/<draw_id>/publish', methods=['POST'])
+# @roles_required('admin')
+# def draw_publish(draw_id):
+#     try:
+#         database_repo.publish_draw(database_repo.get_draw_by_id(draw_id))
+#         flash("Draw successfully published!",  "success")
+#     except DrawStatusException:
+#         flash("Add more events to publish the draw", "error")
+#     return redirect(f"/admin/draws/{draw_id}")
