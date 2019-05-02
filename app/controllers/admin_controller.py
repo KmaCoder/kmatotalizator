@@ -1,7 +1,7 @@
 from flask_user import roles_required
-from flask import Blueprint, render_template, url_for, redirect, flash
+from flask import Blueprint, render_template, flash
 
-from app.db.exceptions import DrawStatusException, DrawEventsOverflowException
+from app.exceptions.db_exceptions import DrawEventsOverflowException
 from app.forms.AdminForms import *
 from app.db.db_repo import database_repo
 

@@ -25,11 +25,13 @@ section.play-main .draw-wrapper {
   justify-content: space-between;
   flex-direction: column;
   text-align: center;
+  color: #fff;
+  text-decoration: none;
 }
 section.play-main .draw-wrapper:before {
   position: absolute;
   content: "";
-  background: url("https://v2d.ccdnss.com/default/img/toto/fifteen_bg.jpg") no-repeat center;
+  background: url("/static/images/bg2.jpg") no-repeat center;
   background-size: 100%;
   top: 0;
   bottom: 0;

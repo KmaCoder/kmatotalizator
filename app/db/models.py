@@ -74,9 +74,8 @@ class Draw(db.Model):
     def pool_amount(self):
         # return reduce((lambda event_, sum_e: reduce((lambda parlay_, sum_p: parlay_.amount + sum_p), event_) + sum_e), self.events)
         result = 0
-        for e in self.events:
-            for p in e.parlays:
-                result += p.amount
+        for p in self.events[0].parlays:
+            result += p.amount
         return result
 
 
@@ -88,9 +87,9 @@ class Event(db.Model):
     datetime = db.Column(db.DateTime, nullable=False)
     draw = db.relationship('Draw', back_populates="events")
     outcome = db.relationship('Outcome')
-    parlays = db.relationship('Parlay', secondary='parlay_details', backref=db.backref('parlays', lazy='dynamic'))
+    parlays = db.relationship('Parlay', secondary='parlay_details')
 
-    draw_fk = db.Column(db.Integer, db.ForeignKey('draws.id', ondelete='RESTRICT', onupdate='CASCADE'),
+    draw_fk = db.Column(db.Integer, db.ForeignKey('draws.id', ondelete='CASCADE', onupdate='CASCADE'),
                         nullable=False)
     outcome_fk = db.Column(db.Integer, db.ForeignKey('possible_outcomes.id', ondelete='RESTRICT', onupdate='CASCADE'))
 
@@ -102,6 +101,8 @@ class Parlay(db.Model):
     amount = db.Column(db.Float, nullable=False)
     user_fk = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
                         nullable=False)
+
+    user = db.relationship('User')
 
 
 class ParlayDetails(db.Model):
@@ -124,9 +125,9 @@ def init_roles(*args, **kwargs):
 
 @event.listens_for(Outcome.__table__, 'after_create')
 def init_outcomes(*args, **kwargs):
-    db.session.add(Outcome(name="w1"))
+    db.session.add(Outcome(name="W1"))
     db.session.add(Outcome(name="X"))
-    db.session.add(Outcome(name="w2"))
+    db.session.add(Outcome(name="W2"))
     db.session.commit()
 
 

@@ -1,7 +1,7 @@
 @import "common/variables";
 
 body {
-	background-color: $bg-dark;
+	background-color: $dark-1;
 	color: white;
 }
 
@@ -31,11 +31,13 @@ section.play-main {
 		justify-content: space-between;
 		flex-direction: column;
 		text-align: center;
+		color: $text-white;
+		text-decoration: none;
 
 		&:before {
 			position: absolute;
 			content: '';
-			background: url("https://v2d.ccdnss.com/default/img/toto/fifteen_bg.jpg") no-repeat center;
+			background: url("/static/images/bg2.jpg") no-repeat center;
 			background-size: 100%;
 			top: 0;
 			bottom: 0;

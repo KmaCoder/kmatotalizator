@@ -1,11 +1,8 @@
 @import "../common/variables";
 
-$nav-bg: #343a40;
-$nav-color: white;
-
 nav {
-	color: $nav-color;
-	background-color: $nav-bg;
+	color: $text-white;
+	background-color: $dark-2;
 
 	.navbar-brand {
 		font-weight: 700;
@@ -23,10 +20,10 @@ nav {
 	}
 
 	a {
-		color: $nav-color;
+		color: $text-white;
 
 		&:hover {
-			color: darken($nav-color, 20%);
+			color: darken($text-white, 20%);
 		}
 	}
 
@@ -37,14 +34,14 @@ nav {
 	}
 
 	.profile-button {
-		border: 1px solid $nav-color;
-		color: $nav-color;
+		border: 1px solid $text-white;
+		color: $text-white;
 		background: transparent;
 		padding: .2rem 1rem;
 
 		&:hover {
-			background: $nav-color;
-			color: $nav-bg;
+			background: $text-white;
+			color: $dark-2;
 		}
 	}
 

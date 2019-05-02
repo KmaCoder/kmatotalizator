@@ -14,7 +14,7 @@
             <div class="row draws-row">
                 {% for draw in draws %}
                     <div class="col-sm-6 draw-column">
-                        <div class="draw-wrapper">
+                        <a href="/play/{{ draw.id }}" class="draw-wrapper">
                             <div class="draw-name">
                                 <div class="draw-name-main">{{ draw.name }}</div>
                                 <div class="draw-name-subtext">(Draw #{{ draw.id }})</div>
@@ -38,7 +38,7 @@
                                     {{ draw.pool_amount }}
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% endfor %}
             </div>

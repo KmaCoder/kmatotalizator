@@ -1,0 +1,86 @@
+{% extends "common/layout.html" %}
+
+{% block title %}{{ super() }} - Play TOTO{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/toto-football-placebet.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section class="placebet">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-5">
+                    <div class="left-col-wrapper">
+                        <div class="draw-info">
+                            <div class="draw-name">
+                                <div class="draw-name-main">{{ draw.name }}</div>
+                                <div class="draw-name-subtext">(Draw #{{ draw.id }})</div>
+                            </div>
+                            <div class="draw-countdown">
+                                <div class="draw-countdown-text">Remaining time</div>
+                                <div class="draw-countdown-wrapper" data-countdown="{{ draw.datetime_first_match }}">
+                                    <div class="js-days"></div>
+                                    <div class="divider">:</div>
+                                    <div class="js-hours"></div>
+                                    <div class="divider">:</div>
+                                    <div class="js-minutes"></div>
+                                    <div class="divider">:</div>
+                                    <div class="js-seconds"></div>
+                                </div>
+                            </div>
+
+                            <div class="draw-pool">
+                                <div class="draw-pool-text">Pool:</div>
+                                <div class="draw-pool-amount">
+                                    {{ draw.pool_amount }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bet-info">
+                            <form class="bet-wrapper" id="form-placebet" action="/play/{{ draw.id }}/placebet">
+                                <input type="number" min="10" required class="input-placebet" placeholder="Amount" name="amount">
+                                <button type="submit" class="btn btn-placebet">Place a bet!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-7">
+                    <form id="form-events">
+                        <table class="table table-events">
+                            {% for event in draw.events %}
+                                <tr class="event-wrapper">
+                                    <td class="event-index">
+                                        {{ loop.index }}
+                                    </td>
+                                    <td class="event-name">
+                                        {{ event.name }}
+                                    </td>
+                                    <td class="event-datetime">
+                                        {{ event.datetime }}
+                                    </td>
+                                    <td class="event-outcomes">
+                                        {% for outcome in possible_outcomes %}
+                                            <label class="outcome-label">
+                                                <input type="radio" name="{{ event.id }}"
+                                                       value="{{ outcome.id }}">
+                                                <span class="outcome-stylized">{{ outcome.name }}</span>
+                                            </label>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/placebet.js') }}"></script>
+{% endblock %}

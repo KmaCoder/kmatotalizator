@@ -3,7 +3,8 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
 
-from app.db.exceptions import DrawEventsOverflowException, DrawStatusException
+from app.exceptions.controller_exceptions import PlaceBetException
+from app.exceptions.db_exceptions import DrawEventsOverflowException
 from app.db.models import *
 
 
@@ -46,6 +47,9 @@ class DatabaseRepo:
     def get_all_draws(self):
         return Draw.query.all()
 
+    def get_all_possible_outcomes(self):
+        return Outcome.query.order_by(Outcome.id).all()
+
     def get_pending_draws(self):
         datetime_now = datetime.now()
         return Draw.query.filter(Draw.datetime_first_match > datetime_now)
@@ -68,6 +72,27 @@ class DatabaseRepo:
 
         self.db.session.commit()
         return event
+
+    def place_bet(self, amount: int, events_data, user: User):
+        if len(events_data) < Draw.events_amount:
+            raise PlaceBetException(message="Select outcome for every event")
+
+        if user.balance < float(amount):
+            raise PlaceBetException(message="Not enough funds")
+
+        parlay = Parlay(amount=amount, user=user)
+        self.db.session.add(parlay)
+        self.db.session.commit()
+
+        for parlay_info in events_data:
+            print(f"parlay: {parlay.id}, event: {parlay_info['name']}, outcome: {parlay_info['value']}")
+            self.db.session.add(
+                ParlayDetails(parlay_fk=parlay.id, outcome_fk=parlay_info['value'], event_fk=parlay_info['name']))
+
+        user.balance -= float(amount)
+
+        self.db.session.commit()
+        return parlay
 
     def _get_or_create(self, model, **kwargs):
         instance = self.db.session.query(model).filter_by(**kwargs).first()
