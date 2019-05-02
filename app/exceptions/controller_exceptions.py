@@ -1,4 +1,4 @@
-class PlaceBetException(Exception):
+class CustomException(Exception):
     status_code = 406
 
     def __init__(self, message, status_code=None, payload=None):
@@ -12,3 +12,7 @@ class PlaceBetException(Exception):
         rv = dict(self.payload or ())
         rv['message'] = self.message
         return rv
+
+
+class PlaceBetException(CustomException):
+    pass

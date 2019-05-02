@@ -8,7 +8,6 @@ game_blueprint = Blueprint('game', __name__)
 
 
 @game_blueprint.route('/play')
-@login_required
 def toto_play():
     draws = database_repo.get_pending_draws()
     return render_template('pages/play/toto_football.html', draws=draws)

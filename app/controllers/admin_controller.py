@@ -1,5 +1,5 @@
 from flask_user import roles_required
-from flask import Blueprint, render_template, flash
+from flask import Blueprint, render_template, flash, request, jsonify
 
 from app.exceptions.db_exceptions import DrawEventsOverflowException
 from app.forms.AdminForms import *
@@ -30,13 +30,23 @@ def draws():
 def draw_edit(draw_id):
     form = AdminCreateEventForm()
     draw = database_repo.get_draw_by_id(draw_id)
+    possible_outcomes = database_repo.get_all_possible_outcomes()
     if form.validate_on_submit():
         try:
             event = database_repo.create_event(event_name=form.name.data, event_datetime=form.date.data, draw=draw)
             flash(f"Event #{event.id} created successfully", "success")
         except DrawEventsOverflowException:
             flash(f"You are trying to add to many events: maximum {draw.events_amount}", "error")
-    return render_template('pages/adminka/admin_draw_edit.html', form=form, draw=draw)
+    return render_template('pages/adminka/admin_draw_edit.html', form=form, draw=draw,
+                           possible_outcomes=possible_outcomes)
+
+
+@admin_blueprint.route('/admin/event/<event_id>/update_outcome', methods=['POST'])
+@roles_required('admin')
+def update_outcome(event_id):
+    outcome_id = request.get_json()['outcome_id']
+    database_repo.update_event_outcome(outcome_id=outcome_id, event_id=event_id)
+    return jsonify({"message": f"Outcome successfully updated for Event {event_id}"})
 
 #
 # @admin_blueprint.route('/admin/draws/<draw_id>/publish', methods=['POST'])

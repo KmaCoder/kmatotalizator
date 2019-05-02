@@ -55,7 +55,7 @@ class Draw(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
     datetime_first_match = db.Column(db.DateTime, nullable=True)
     is_finished = db.Column(db.Boolean, nullable=False, default=False)
-    events = db.relationship('Event', back_populates="draw")
+    events = db.relationship('Event', back_populates="draw", order_by="Event.id")
 
     @hybrid_property
     def draw_status(self):
@@ -72,10 +72,10 @@ class Draw(db.Model):
 
     @hybrid_property
     def pool_amount(self):
-        # return reduce((lambda event_, sum_e: reduce((lambda parlay_, sum_p: parlay_.amount + sum_p), event_) + sum_e), self.events)
         result = 0
-        for p in self.events[0].parlays:
-            result += p.amount
+        if len(self.events) > 0:
+            for p in self.events[0].parlays:
+                result += p.amount
         return result
 
 

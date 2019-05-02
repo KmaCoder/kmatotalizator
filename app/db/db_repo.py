@@ -45,14 +45,14 @@ class DatabaseRepo:
         return Draw.query.get(draw_id)
 
     def get_all_draws(self):
-        return Draw.query.all()
+        return Draw.query.order_by(Draw.datetime_first_match.desc()).all()
 
     def get_all_possible_outcomes(self):
         return Outcome.query.order_by(Outcome.id).all()
 
     def get_pending_draws(self):
         datetime_now = datetime.now()
-        return Draw.query.filter(Draw.datetime_first_match > datetime_now)
+        return Draw.query.filter(Draw.datetime_first_match > datetime_now).order_by(Draw.datetime_first_match.desc())
 
     def create_draw(self, draw_name) -> Draw:
         draw = Draw(name=draw_name)
@@ -72,6 +72,13 @@ class DatabaseRepo:
 
         self.db.session.commit()
         return event
+
+    def get_event_by_id(self, event_id) -> Event:
+        return Event.query.get(event_id)
+
+    def update_event_outcome(self, event_id, outcome_id):
+        self.get_event_by_id(event_id=event_id).outcome_fk = outcome_id
+        self.db.session.commit()
 
     def place_bet(self, amount: int, events_data, user: User):
         if len(events_data) < Draw.events_amount:
