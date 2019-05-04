@@ -46,7 +46,13 @@ def draw_edit(draw_id):
 def update_outcome(event_id):
     outcome_id = request.get_json()['outcome_id']
     database_repo.update_event_outcome(outcome_id=outcome_id, event_id=event_id)
-    return jsonify({"message": f"Outcome successfully updated for Event {event_id}"})
+    return jsonify({"message": f"Outcome successfully updated for event #{event_id}"})
+
+
+@admin_blueprint.route('/admin/draws/<draw_id>/distribute', methods=['GET'])
+@roles_required('admin')
+def test(draw_id):
+    database_repo._distribute_pool(database_repo.get_draw_by_id(draw_id))
 
 #
 # @admin_blueprint.route('/admin/draws/<draw_id>/publish', methods=['POST'])

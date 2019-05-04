@@ -40,9 +40,7 @@
                             <tr>
                                 <td>{{ event.id }}</td>
                                 <td>
-                                    <a href="/admin/event/{{ event.id }}">
-                                        {{ event.name }}
-                                    </a>
+                                    {{ event.name }}
                                 </td>
                                 <td>
                                     {{ event.datetime }}
@@ -63,7 +61,7 @@
                                             {% endfor %}
                                         </select>
                                     {% else %}
-                                        {{ event.outcome }}
+                                        {{ event.outcome.name }}
                                     {% endif %}
                                 </td>
                             </tr>

@@ -38,6 +38,8 @@ class User(db.Model, UserMixin):
     # roles relationship
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'))
 
+    parlays = db.relationship('Parlay', back_populates="user")
+
 
 class UserRoles(db.Model):
     __tablename__ = 'user_roles'
@@ -71,12 +73,23 @@ class Draw(db.Model):
             return "pending"
 
     @hybrid_property
-    def pool_amount(self):
-        result = 0
+    def all_parlays(self):
+        parlays = set()
         if len(self.events) > 0:
             for p in self.events[0].parlays:
-                result += p.amount
-        return result
+                parlays.add(p)
+        return parlays
+
+    @hybrid_property
+    def pool_amount(self):
+        return reduce(lambda x, y: x + y.amount, self.all_parlays, 0)
+
+    @hybrid_property
+    def all_players(self):
+        players = set()
+        for p in self.all_parlays:
+            players.add(p.user)
+        return players
 
 
 class Event(db.Model):
@@ -85,13 +98,14 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     datetime = db.Column(db.DateTime, nullable=False)
-    draw = db.relationship('Draw', back_populates="events")
-    outcome = db.relationship('Outcome')
-    parlays = db.relationship('Parlay', secondary='parlay_details')
 
     draw_fk = db.Column(db.Integer, db.ForeignKey('draws.id', ondelete='CASCADE', onupdate='CASCADE'),
                         nullable=False)
-    outcome_fk = db.Column(db.Integer, db.ForeignKey('possible_outcomes.id', ondelete='RESTRICT', onupdate='CASCADE'))
+    outcome_fk = db.Column(db.Integer, db.ForeignKey('possible_outcomes.id', ondelete='CASCADE', onupdate='CASCADE'))
+
+    outcome = db.relationship("Outcome")
+    draw = db.relationship('Draw', back_populates="events")
+    parlays = db.relationship('Parlay', secondary='parlay_details')
 
 
 class Parlay(db.Model):
@@ -102,7 +116,8 @@ class Parlay(db.Model):
     user_fk = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
                         nullable=False)
 
-    user = db.relationship('User')
+    user = db.relationship('User', back_populates="parlays")
+    parlay_details = db.relationship('ParlayDetails')
 
 
 class ParlayDetails(db.Model):
@@ -115,6 +130,9 @@ class ParlayDetails(db.Model):
     outcome_fk = db.Column(db.Integer,
                            db.ForeignKey('possible_outcomes.id', ondelete='CASCADE', onupdate='CASCADE'),
                            nullable=False, primary_key=True)
+
+    outcome = db.relationship("Outcome")
+    event = db.relationship("Event")
 
 
 @event.listens_for(Role.__table__, 'after_create')

@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import reduce
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
@@ -45,7 +46,7 @@ class DatabaseRepo:
         return Draw.query.get(draw_id)
 
     def get_all_draws(self):
-        return Draw.query.order_by(Draw.datetime_first_match.desc()).all()
+        return Draw.query.order_by(Draw.id.desc()).all()
 
     def get_all_possible_outcomes(self):
         return Outcome.query.order_by(Outcome.id).all()
@@ -78,6 +79,10 @@ class DatabaseRepo:
 
     def update_event_outcome(self, event_id, outcome_id):
         self.get_event_by_id(event_id=event_id).outcome_fk = outcome_id
+        draw = self.get_event_by_id(event_id).draw
+        if self._check_draw_finished(draw):
+            self._distribute_pool(draw)
+
         self.db.session.commit()
 
     def place_bet(self, amount: int, events_data, user: User):
@@ -100,6 +105,64 @@ class DatabaseRepo:
 
         self.db.session.commit()
         return parlay
+
+    def _check_draw_finished(self, draw: Draw):
+        if draw.draw_status != "waiting_results":
+            return False
+        for event in draw.events:
+            if event.outcome is None:
+                return False
+        return True
+
+    def _distribute_pool(self, draw):
+        winner_parlays = {
+            9: {
+                "percent": 32,
+                "parlays": []
+            },
+            10: {
+                "percent": 18,
+                "parlays": []
+            },
+            11: {
+                "percent": 10,
+                "parlays": []
+            },
+            12: {
+                "percent": 10,
+                "parlays": []
+            },
+            13: {
+                "percent": 10,
+                "parlays": []
+            },
+            14: {
+                "percent": 10,
+                "parlays": []
+            },
+            15: {
+                "percent": 10,
+                "parlays": []
+            }
+        }
+        for parlay in draw.all_parlays:
+            correct_outcomes = reduce(lambda sum_, detail_: int(detail_.outcome.id == detail_.event.outcome.id) + sum_,
+                                      parlay.parlay_details, 0)
+            if correct_outcomes in winner_parlays:
+                winner_parlays[correct_outcomes]["parlays"].append(parlay)
+            # print(f"user: {parlay.user.username}; amount: {parlay.amount}; parlay_id: {parlay.id}; correct: {correct_outcomes}")
+        print(winner_parlays)
+
+        draw_sum = draw.pool_amount * 0.9
+        for score, group in winner_parlays:
+            group_sum = draw_sum * group["percent"]
+            parlays_count = len(group["parlay"])
+            for parlay in group["parlay"]:
+                user_profit = 0
+        #         TODO
+
+        # draw.is_finished = True
+        # self.db.session.commit()
 
     def _get_or_create(self, model, **kwargs):
         instance = self.db.session.query(model).filter_by(**kwargs).first()
