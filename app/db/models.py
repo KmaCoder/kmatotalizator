@@ -113,6 +113,7 @@ class Parlay(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     amount = db.Column(db.Float, nullable=False)
+    win_sum = db.Column(db.Float, nullable=True)
     user_fk = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
                         nullable=False)
 

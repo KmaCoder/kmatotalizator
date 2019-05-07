@@ -8,3 +8,7 @@ class DrawEventsOverflowException(Exception):
 
 class DrawStatusException(Exception):
     pass
+
+
+class DrawFundsDistributionException(Exception):
+    pass

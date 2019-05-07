@@ -96,6 +96,7 @@ section.placebet .table-events {
 section.placebet .table-events td {
   vertical-align: middle;
   border: none;
+  padding: 0.75rem 0.2rem;
 }
 section.placebet .table-events .event-wrapper:nth-of-type(odd) {
   background-color: rgba(12, 12, 12, 0.15);
