@@ -24,3 +24,10 @@ def balance():
         flash(f"Your balance was successfully replenished (+{form.amount.data})", "success")
 
     return render_template('flask_user/custom_pages/balance.html', form=form)
+
+
+@user_blueprint.route('/user/parlays', methods=['GET'])
+@login_required
+def parlays():
+    parlays = current_user.parlays
+    return render_template('flask_user/custom_pages/parlays.html', parlays=parlays)
