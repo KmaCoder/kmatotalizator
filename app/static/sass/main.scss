@@ -36,6 +36,27 @@ section.first-section {
 	padding-top: 50px;
 }
 
-.flashes-container {
+.btn-custom {
+	box-shadow: inset 0 50px 25px -25px #5378b2;
+	background-color: #3c6293;
+	color: white;
+	border-radius: 0;
+	padding: 5px 15px;
+	border-color: transparent;
+	transition-duration: 0.1s;
 
+	&.green {
+		box-shadow: inset 0 50px 25px -25px #84b232;
+		background-color: #648626;
+
+		&:hover {
+			box-shadow: inset 0 50px 25px -25px #648626;
+			background-color: #84b232;
+		}
+	}
+
+	&:hover {
+		box-shadow: inset 0 50px 25px -25px #3c6293;
+		background-color: #5378b2;
+	}
 }

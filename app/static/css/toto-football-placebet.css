@@ -1,19 +1,25 @@
-body {
-  background-color: #3e444d;
-  color: white;
-}
-
 section.placebet {
   margin-top: 40px;
   margin-bottom: 40px;
 }
-section.placebet .left-col-wrapper {
+section.placebet .sticky-wrapper {
   position: sticky;
   top: 80px;
+}
+section.placebet .draw-actions-wrapper {
+  margin: 20px 0;
+  padding: 15px 20px;
+  background-color: rgba(42, 42, 50, 0.71);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+section.placebet .draw-info-wrapper {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   color: #fff;
+  position: relative;
 }
-section.placebet .left-col-wrapper:before {
+section.placebet .draw-info-wrapper:before {
   position: absolute;
   content: "";
   background: url("/static/images/bg1.jpg") no-repeat center;
@@ -25,15 +31,15 @@ section.placebet .left-col-wrapper:before {
   opacity: 0.3;
   z-index: -1;
 }
-section.placebet .left-col-wrapper .bet-info {
-  padding: 20px;
+section.placebet .draw-info-wrapper .bet-info {
+  padding: 15px 20px;
   background-color: rgba(42, 42, 50, 0.71);
 }
-section.placebet .left-col-wrapper .bet-info .bet-wrapper {
+section.placebet .draw-info-wrapper .bet-info .bet-wrapper {
   display: flex;
   justify-content: space-between;
 }
-section.placebet .left-col-wrapper .bet-info .input-placebet {
+section.placebet .draw-info-wrapper .bet-info .input-placebet {
   display: block;
   flex: 1;
   border: 1px solid rgba(143, 143, 143, 0.8);
@@ -44,14 +50,7 @@ section.placebet .left-col-wrapper .bet-info .input-placebet {
   color: #fff;
   min-width: 100px;
 }
-section.placebet .left-col-wrapper .bet-info .btn-placebet {
-  box-shadow: inset 0 50px 25px -25px #84b232;
-  background-color: #648626;
-  color: white;
-  border-radius: 0;
-  padding: 5px 15px;
-}
-section.placebet .left-col-wrapper .draw-info {
+section.placebet .draw-info-wrapper .draw-info {
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -59,34 +58,34 @@ section.placebet .left-col-wrapper .draw-info {
   text-align: center;
   text-decoration: none;
 }
-section.placebet .left-col-wrapper .draw-info .draw-name-main {
+section.placebet .draw-info-wrapper .draw-info .draw-name-main {
   font-size: 20px;
   text-transform: uppercase;
   font-weight: 600;
 }
-section.placebet .left-col-wrapper .draw-info .draw-name-sub {
+section.placebet .draw-info-wrapper .draw-info .draw-name-sub {
   opacity: 0.8;
   font-size: 16px;
 }
-section.placebet .left-col-wrapper .draw-info .draw-countdown {
+section.placebet .draw-info-wrapper .draw-info .draw-countdown {
   margin-top: 30px;
 }
-section.placebet .left-col-wrapper .draw-info .draw-countdown-wrapper {
+section.placebet .draw-info-wrapper .draw-info .draw-countdown-wrapper {
   display: flex;
   justify-content: center;
   font-size: 20px;
   font-weight: 600;
 }
-section.placebet .left-col-wrapper .draw-info .draw-countdown-text {
+section.placebet .draw-info-wrapper .draw-info .draw-countdown-text {
   opacity: 0.8;
 }
-section.placebet .left-col-wrapper .draw-info .draw-pool {
+section.placebet .draw-info-wrapper .draw-info .draw-pool {
   margin-top: 30px;
 }
-section.placebet .left-col-wrapper .draw-info .draw-pool-text {
+section.placebet .draw-info-wrapper .draw-info .draw-pool-text {
   opacity: 0.8;
 }
-section.placebet .left-col-wrapper .draw-info .draw-pool-amount {
+section.placebet .draw-info-wrapper .draw-info .draw-pool-amount {
   font-size: 20px;
 }
 section.placebet .table-events {
@@ -96,7 +95,7 @@ section.placebet .table-events {
 section.placebet .table-events td {
   vertical-align: middle;
   border: none;
-  padding: 0.75rem 0.2rem;
+  padding: 10px;
 }
 section.placebet .table-events .event-wrapper:nth-of-type(odd) {
   background-color: rgba(12, 12, 12, 0.15);
@@ -115,7 +114,7 @@ section.placebet .table-events .event-wrapper .event-name {
 section.placebet .table-events .event-wrapper .event-outcomes .outcome-stylized {
   background: rgba(117, 117, 117, 0.54);
   font-size: 14px;
-  padding: 4px 5px;
+  padding: 5px 5px;
   min-width: 55px;
   line-height: 1;
   display: inline-block;
@@ -130,6 +129,7 @@ section.placebet .table-events .event-wrapper .event-outcomes input:checked + .o
 section.placebet .table-events .event-wrapper .event-outcomes .outcome-label {
   margin: 0;
   cursor: pointer;
+  user-select: none;
 }
 
 /*# sourceMappingURL=toto-football-placebet.css.map */
