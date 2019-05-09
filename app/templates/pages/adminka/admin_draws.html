@@ -11,7 +11,7 @@
                 <div class="col-md-8">
                     <h3>Draws list:</h3>
 
-                <table class="table">
+                    <table class="table">
                         <thead class="thead-light">
                         <tr>
                             <th>
@@ -45,7 +45,7 @@
                                 <td>
                                     {{ draw.datetime_first_match }}
                                 </td>
-                            <td>
+                                <td>
                                     {{ draw.pool_amount }}
                                 </td>
                             </tr>
@@ -57,6 +57,8 @@
                     <form class="form" method="post">
                         {{ form.hidden_tag() }}
                         {{ render_field(form.name) }}
+                        {{ render_field(form.add_random_events) }}
+                        {{ render_field(form.date) }}
                         {{ render_submit_field(form.submit) }}
                     </form>
                 </div>

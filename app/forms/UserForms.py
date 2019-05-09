@@ -1,10 +1,10 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, IntegerField
 from wtforms.validators import DataRequired
 from flask_user.forms import EditUserProfileForm
 
 
-class UserBalanceReplenish(Form):
+class UserBalanceReplenish(FlaskForm):
     amount = IntegerField('Amount', validators=[DataRequired()], render_kw={"placeholder": "Top-up amount"})
     submit = SubmitField('Replenish')
 

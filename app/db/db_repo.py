@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 from functools import reduce
 
@@ -61,6 +62,17 @@ class DatabaseRepo:
         self.db.session.commit()
         return draw
 
+    def add_random_events_to_draw(self, draw: Draw, date):
+        while len(draw.events) < draw.events_amount:
+            self.create_event("Team1 - Team2", date, draw)
+            self.db.session.commit()
+
+    def set_random_draw_outcomes(self, draw: Draw):
+        for event in draw.events:
+            self.update_event_outcome(event.id,
+                                      self.db.session.query(Outcome)[random.randrange(0, Outcome.query.count())])
+            self.db.session.commit()
+
     def create_event(self, event_name, event_datetime, draw: Draw, outcome: Outcome = None) -> Event:
         if len(draw.events) >= draw.events_amount:
             raise DrawEventsOverflowException
@@ -97,7 +109,6 @@ class DatabaseRepo:
         self.db.session.commit()
 
         for parlay_info in events_data:
-            print(f"parlay: {parlay.id}, event: {parlay_info['name']}, outcome: {parlay_info['value']}")
             self.db.session.add(
                 ParlayDetails(parlay_fk=parlay.id, outcome_fk=parlay_info['value'], event_fk=parlay_info['name']))
 
@@ -158,10 +169,12 @@ class DatabaseRepo:
 
             # adding parlay to winner_parlays object
             for i in range(min(winner_parlays.keys()), correct_outcomes + 1):
-                winner_parlays[correct_outcomes]["parlays"].append(parlay)
+                winner_parlays[i]["parlays"].append(parlay)
 
         # calculating the prize fund (10% is going to the company)
         draw_prize_fund = draw.pool_amount * 0.9
+
+        # calculating win sum for every parlay and credit gains to users
         for score, group in winner_parlays.items():
             if len(group["parlays"]) == 0:
                 continue
@@ -172,7 +185,6 @@ class DatabaseRepo:
 
             for parlay in group["parlays"]:
                 parlay_win_sum = parlay.amount * coeficient
-                print(f"{parlay.id}. parlay_amount: {parlay.amount}; profit: {parlay_win_sum}")
                 parlay.win_sum = parlay_win_sum if parlay.win_sum is None else parlay.win_sum + parlay_win_sum
                 parlay.user.balance += parlay_win_sum
 

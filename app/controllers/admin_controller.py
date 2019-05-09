@@ -1,5 +1,5 @@
 from flask_user import roles_required
-from flask import Blueprint, render_template, flash, request, jsonify
+from flask import Blueprint, render_template, flash, request, jsonify, redirect
 
 from app.exceptions.db_exceptions import DrawEventsOverflowException
 from app.forms.AdminForms import *
@@ -11,7 +11,7 @@ admin_blueprint = Blueprint('admin', __name__)
 @admin_blueprint.route('/admin')
 @roles_required('admin')
 def main_page():
-    return render_template('pages/adminka/admin_main.html')
+    return redirect("/admin/draws")
 
 
 @admin_blueprint.route('/admin/draws', methods=['GET', 'POST'])
@@ -20,7 +20,11 @@ def draws():
     form = AdminCreateDrawForm()
     if form.validate_on_submit():
         draw = database_repo.create_draw(draw_name=form.name.data)
+        if form.add_random_events.data:
+            database_repo.add_random_events_to_draw(draw=draw, date=form.date.data)
+            flash(f"Random events added to draw", "success")
         flash(f"Draw #{draw.id} created successfully", "success")
+
     draws_list = database_repo.get_all_draws()
     return render_template('pages/adminka/admin_draws.html', form=form, draws=draws_list)
 
@@ -51,16 +55,6 @@ def update_outcome(event_id):
 
 @admin_blueprint.route('/admin/draws/<draw_id>/distribute', methods=['GET'])
 @roles_required('admin')
-def test(draw_id):
+def test_distribute(draw_id):
     database_repo._distribute_pool(database_repo.get_draw_by_id(draw_id))
-
-#
-# @admin_blueprint.route('/admin/draws/<draw_id>/publish', methods=['POST'])
-# @roles_required('admin')
-# def draw_publish(draw_id):
-#     try:
-#         database_repo.publish_draw(database_repo.get_draw_by_id(draw_id))
-#         flash("Draw successfully published!",  "success")
-#     except DrawStatusException:
-#         flash("Add more events to publish the draw", "error")
-#     return redirect(f"/admin/draws/{draw_id}")
+    return "test_distribute"
