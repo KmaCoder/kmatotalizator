@@ -16,4 +16,6 @@ DB_PORT='5432'
 * Install bower requirements `bower i`
 
 ### Run
-Run application with `python3 run.py`
+Run application with `python3 run.py`.
+
+Open browser http://localhost:8080/
