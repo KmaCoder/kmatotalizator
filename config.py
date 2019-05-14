@@ -41,4 +41,4 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
 
-config_object = DevelopmentConfig()
+config_object = ProductionConfig()
