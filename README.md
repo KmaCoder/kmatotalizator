@@ -1,5 +1,6 @@
 # KmaTotalizator
 > 3rd year course work, NaUKMA, Faculty of Computer Sciences, Software Engineering, created by **Nesterov Maksym**
+https://totalizator.lknmessenger.co
 
 ### Setup project
 * Make sure that you have installed Python 3 and PostgreSQL.
