@@ -18,4 +18,4 @@ DB_PORT='5432'
 ### Run
 Run application with `python3 run.py`.
 
-Open browser http://localhost:8080/
+Open browser http://localhost:8000/
