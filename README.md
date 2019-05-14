@@ -1,5 +1,5 @@
 # KmaTotalizator
-> 3rd year course work, NaUKMA, Faculty of Informatics, Software Engineering, created by **Nesterov Maksym**
+> 3rd year course work, NaUKMA, Faculty of Computer Sciences, Software Engineering, created by **Nesterov Maksym**
 
 ### Setup project
 * Make sure that you have installed Python 3 and PostgreSQL.
@@ -16,4 +16,6 @@ DB_PORT='5432'
 * Install bower requirements `bower i`
 
 ### Run
-Run application with `python3 run.py`
+Run application with `python3 run.py`.
+
+Open browser http://localhost:8080/
