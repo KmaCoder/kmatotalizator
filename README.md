@@ -1,6 +1,8 @@
 # KmaTotalizator
 > 3rd year course work, NaUKMA, Faculty of Computer Sciences, Software Engineering, created by **Nesterov Maksym**
 
+Live preview: https://totalizator.lknmessenger.co
+
 ### Setup project
 * Make sure that you have installed Python 3 and PostgreSQL.
 * Create file `.env` in the root of project folder for configuring DB and Secret Key. Example:
@@ -18,4 +20,4 @@ DB_PORT='5432'
 ### Run
 Run application with `python3 run.py`.
 
-Open browser http://localhost:8080/
+Open browser http://localhost:8000/
